@@ -1,5 +1,7 @@
 # Week 1  
 
+[Hour report](https://github.com/uberballo/MapGenerator/blob/master/documentation/hour_report.md)
+
 ## What has happened during week 1  
 
 * Project creation  
