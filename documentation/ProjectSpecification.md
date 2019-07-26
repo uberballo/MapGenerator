@@ -11,12 +11,13 @@ Classic Perlin noise time complexity is O(2^n), while the OpenSimplex noise comp
  
 # Input and output  
 ## Input 
-Size of the map, x and y cordinates.  
-Amplification, how uneven the terrain is.  
+X and Y cordinates, the size of the map.    
+Amplification, how big the height difference is.  
+Frequency, how frequent the height difference is.  
 
 ## Output  
 A map  
-Possibly a png picture, that shows the noise itself.  
+Possibly a png picture, that shows the noise itself.
 
 # Sources  
 Hugo elias, [Classic Perlin noise](http://web.archive.org/web/20160530124230/http://freespace.virgin.net/hugo.elias/models/m_perlin.htm)  
