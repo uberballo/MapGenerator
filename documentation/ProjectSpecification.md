@@ -7,7 +7,7 @@ Algorithms we use, are Perlin noise and OpenSimplex noise. If there is time, A\*
 
 ## Time and space complexity  
 The array where the maps are stored, have both time and space complexity of O(n).  
-Classic Perlin noise time complexity is O(2^n), while the OpenSimplex noise complexity is O(n^2), for n dimensions. Space complexity for both is O(n).  
+Classic Perlin noise time complexity is O(2^n), while the OpenSimplex noise complexity is O(n^2), for n dimensions. Space complexity for both is O(1).  
  
 # Input and output  
 ## Input 
