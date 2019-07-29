@@ -31,19 +31,15 @@ public class Main {
 		BufferedImage image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
 		for (int i = 0; i<x;i++){
 			for (int j=0;j<y;j++){
-				double value = (noise.perlinNoise2d(i, j));
+				double value = (noise.perlinSecond(i, j,0));
+				System.out.println(value);
 				int rgb = 0x010101 * (int) ((value + 1) * 127.5);
 				image.setRGB(i, j, rgb);
 			}
 		}
 		ImageIO.write(image, "png", new File("noise.png"));
-		
-	int grad3[][] = {{1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0},
-	{1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1},
-	{0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}};
-		System.out.println(Arrays.toString(grad3[1]));
+		System.out.println(noise.perlinSecond(1, 1, 0));
 		for (int i = 0; i< 10; i++){
-			//System.out.println(noise.perlinNoise2d(i, 1));
 		}
 
 	}
