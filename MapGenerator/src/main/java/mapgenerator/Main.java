@@ -5,14 +5,13 @@
  */
 package mapgenerator;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Random;
 import javax.imageio.ImageIO;
-import static javax.swing.text.html.HTML.Attribute.HEIGHT;
-import static javax.swing.text.html.HTML.Attribute.WIDTH;
 
 /**
  *
@@ -76,17 +75,20 @@ public class Main {
 		int x = 256;
 		int y = 256;
 		BufferedImage image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = image.createGraphics();
 		for (int i = 0; i < x; i++) {
 			for (int j = 0; j < y; j++) {
 				//double value = (noise.octavePerlin(i*1.9, j,1,5,1));
 
-				double nx = i / (double)x ;
-				double ny = j / (double)y;
-				//double value = noise.interpolateNoise(nx,ny);
-				double value = noise.perlinSecond(i * 1.5, j * 1.2, 1);
-				System.out.println(value);
+				double nx = i / (double)x-0.5;
+				double ny = j / (double)y-0.5;
+				double value = noise.interpolateNoise(2*nx,2*ny);
+				//double value = noise.perlinSecond(i * 1.5, j * 1.2, 1);
 				int rgb = 0x010101 * (int) ((value + 1) * 127.5);
-				image.setRGB(i, j, rgb);
+				Color col = new Color((int)(255*value),(int)(255*value),(int)(255*value));
+				g2d.setColor(col);
+				g2d.fillRect(i, j, 1, 1);
+				//image.setRGB(i, j, rgb);
 			}
 		}
 		ImageIO.write(image, "png", new File("noise.png"));
