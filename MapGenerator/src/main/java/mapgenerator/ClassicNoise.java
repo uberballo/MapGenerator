@@ -41,7 +41,7 @@ public class ClassicNoise {
 	public double dotGridGradient(int ix, int iy, double x, double y){
 		double dx = x - ix;
 		double dy = y - iy;
-
+		return 0;
 	}
 
 	public double fade(double x) {
@@ -58,7 +58,6 @@ public class ClassicNoise {
 
 	//This i understand
 	public double grad(int hash, double x, double y, double z) {
-
 		switch (hash & 0xF) {
 			case 0x0:
 				return x + y;
@@ -162,6 +161,24 @@ public class ClassicNoise {
 		return (interpolate(y1, y2, w) + 1) / 2;
 	}
 
+	public double octavePerlin(double x, double y, double z, int octaves, double persistence){
+		double total = 0;
+		double frequency = 1;
+		double amplitude = 112;
+		double maxValue = 0;
+
+		for (int i = 0; i< octaves;i++){
+			total += perlinSecond(x*frequency, y*frequency, z*frequency)*amplitude;
+		
+			maxValue += amplitude;
+			//amplitude *=persistence;
+			//frequency *=2;
+
+		}
+
+		return total/maxValue;
+	}
+
 	public double noise(int x, int y) {
 		int n = x + y * 57;
 		n = (n << 14) ^ n;
@@ -184,14 +201,14 @@ public class ClassicNoise {
 		return a * (1 - f) + b * f;
 	}
 
-	public double interpolate(double a, double b, double x) {
+	public double interpolate2(double a, double b, double x) {
 		return (1.0f - x) * a + b * x;
 	}
 
-	public double interpolate2(double a, double b, double x) {
+	public double interpolate(double a, double b, double x) {
 		return a + x * (b - a);
 	}
-
+	//Was interpolateNoise
 	public double interpolateNoise(double x, double y) {
 		int xAsInt = (int) x;
 		double xFraction = x - xAsInt;
@@ -207,15 +224,15 @@ public class ClassicNoise {
 		double i1 = cosineInterpolate(v1, v2, xFraction);
 		double i2 = cosineInterpolate(v3, v4, xFraction);
 
-		return cosineInterpolate(i1, i2, yFraction);
+		return (cosineInterpolate(i1, i2, yFraction)+1)/2;
 	}
 
 	public double perlinNoise2d(double x, double y) {
 		double total = 0;
 		double per = 0.5;
 		double octaceve = 1;
-		double freq = 2;
-		double amp = 2;
+		double freq = 1;
+		double amp = 1;
 		for (int i = 0; i < octaceve; i++) {
 			total += interpolateNoise(x * freq, y * freq) * amp;
 		}
