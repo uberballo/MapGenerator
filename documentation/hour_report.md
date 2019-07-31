@@ -3,5 +3,8 @@
 ## Week 1  
 | date | time | what did I do|
 | :----:|:-----| :-----|
-| 24.7 | 5 | Looked for information and possible sources|
-| 25.7 | 4 | built a Perlin Noise algorithm|
+|24.7 | 5 | Looked for information and possible sources|
+|25.7 | 4 | built a Perlin Noise algorithm|
+|28.7| 2| Studied Perlin Noise|
+|30.7|3| Implemented other Perlin Noise alghorithm|
+|Total|14|
