@@ -38,16 +38,35 @@ public class ClassicNoise {
 		}
 	}
 
-	public double dotGridGradient(int ix, int iy, double x, double y){
-		double dx = x - ix;
-		double dy = y - iy;
-		return 0;
+	public ClassicNoise(int repeat) {
+		p = new int[512];
+		for (int i = 0; i < 512; i++) {
+			p[i] = permutation[i % 256];
+		}
+		this.repeat = repeat;
 	}
 
+
+	public void setRepeat(int repeat){
+		this.repeat = repeat;
+	}
+
+
+	/**
+	 * Perlin noise fade function, returns 6x^5 - 15x^4 + 10x^3.
+	 * Eases the coordinate values, so they will ease towards integral values.
+	 * @param x
+	 * @return 6x^5 - 15x^4 + 10x^3
+	 */
 	public double fade(double x) {
 		return x * x * x * (x * (x * 6 - 15) + 10);
 	}
-
+	
+	/**
+	 * increments the value, if the repeat value is over 0, we return the remainder of x+1
+	 * @param x
+	 * @return x+1 or x+1 % repeat
+	 */
 	public int inc(int x) {
 		x++;
 		if (repeat > 0) {
@@ -56,7 +75,14 @@ public class ClassicNoise {
 		return x;
 	}
 
-	//This i understand
+	/**
+	 * returns the dot product of a randomly selected gradient vector.
+	 * @param hash, calculated in the perlinSecond method.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return 
+	 */
 	public double grad(int hash, double x, double y, double z) {
 		switch (hash & 0xF) {
 			case 0x0:
@@ -96,23 +122,13 @@ public class ClassicNoise {
 		}
 	}
 
-	//Dont understand
-	public double grad2(int hash, double x, double y, double z) {
-		int h = hash & 15;
-		double u = h < 8 /* 0b1000 */ ? x : y;
-
-		double v;
-		if (h < 4 /* 0b0100 */) {
-			v = y;
-		} else if (h == 12 /* 0b1100 */ || h == 14 /* 0b1110*/) {
-			v = x;
-		} else {
-			v = z;
-		}
-
-		return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
-	}
-
+	/**
+	 * Calculates noise from three values, improved Perlin Noise. Input can't be whole numbers.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return Double between 0 and 1
+	 */
 	public double perlinSecond(double x, double y, double z) {
 		if (repeat > 0) {
 			x = x % repeat;
@@ -160,31 +176,54 @@ public class ClassicNoise {
 
 		return (interpolate(y1, y2, w) + 1) / 2;
 	}
-
+	
+	/**
+	 * Repeats the perlinSecond method for "octaves" times. Applies amplitudes, frequency and persistence to the input values.
+	 * Amplitude affects how big the height differences are.
+	 * Frequency affects how frequent the height differences are.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param octaves how many noises we combine.
+	 * @param persistence how much influence previous octaves have on the new noise.
+	 * @return combined gradient noise
+	 */
 	public double octavePerlin(double x, double y, double z, int octaves, double persistence){
 		double total = 0;
 		double frequency = 1;
-		double amplitude = 112;
+		double amplitude = 2;
 		double maxValue = 0;
 
 		for (int i = 0; i< octaves;i++){
 			total += perlinSecond(x*frequency, y*frequency, z*frequency)*amplitude;
 		
 			maxValue += amplitude;
-			//amplitude *=persistence;
-			//frequency *=2;
+			amplitude *=persistence;
+			frequency *=2;
 
 		}
 
 		return total/maxValue;
 	}
-
+	
+	/**
+	 * a Value Noise algorithm. 
+	 * @param x
+	 * @param y
+	 * @return 
+	 */
 	public double noise(int x, int y) {
 		int n = x + y * 57;
 		n = (n << 14) ^ n;
 		return (1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
 	}
 
+	/**
+	 * Combines the noise value calculated from the surrounding lattice points.
+	 * @param x 
+	 * @param y
+	 * @return 
+	 */
 	public double smoothNoise(int x, int y) {
 		double corners = (noise(x - 1, y - 1) + noise(x + 1, y - 1) + noise(x - 1, y + 1) + noise(x + 1, y + 1)) / 16;
 		double sides = (noise(x - 1, y) + noise(x + 1, y) + noise(x, y - 1) + noise(x, y + 1)) / 8;
@@ -193,7 +232,13 @@ public class ClassicNoise {
 		return corners + sides + center;
 	}
 
-	//Doesn't return rounded number
+	/**
+	 * Interpolates the value x between a and b. Uses the cosine function.
+	 * @param a
+	 * @param b
+	 * @param x
+	 * @return 
+	 */
 	public double cosineInterpolate(double a, double b, double x) {
 		double ft = x * 3.1415927;
 		double f = (1 - Math.cos(ft)) * 0.5;
@@ -201,14 +246,34 @@ public class ClassicNoise {
 		return a * (1 - f) + b * f;
 	}
 
+	/**
+	 * Interpolates the value x between a and b, without any other methods. Functions the same way as interpolate
+	 * @param a
+	 * @param b
+	 * @param x
+	 * @return 
+	 */
 	public double interpolate2(double a, double b, double x) {
 		return (1.0f - x) * a + b * x;
 	}
 
+	/**
+	 * Interpolates the value x between a and b, without any other methods.
+	 * @param a
+	 * @param b
+	 * @param x
+	 * @return 
+	 */
 	public double interpolate(double a, double b, double x) {
 		return a + x * (b - a);
 	}
-	//Was interpolateNoise
+
+	/**
+	 * Interpolates noise around the point (x,y) 
+	 * @param x
+	 * @param y
+	 * @return 
+	 */
 	public double interpolateNoise(double x, double y) {
 		int xAsInt = (int) x;
 		double xFraction = x - xAsInt;
@@ -226,15 +291,24 @@ public class ClassicNoise {
 
 		return (cosineInterpolate(i1, i2, yFraction)+1)/2;
 	}
-
-	public double perlinNoise2d(double x, double y) {
+	
+	/**
+	 * Combines multiple noise for "octaves" times. Applies amplitudes and frequency to the input values.
+	 * Amplitude affects how big the height differences are.
+	 * Frequency affects how frequent the height differences are.
+	 * Works best without whole numbers
+	 * @param x
+	 * @param y
+	 * @return 
+	 */
+	public double valueNoise(double x, double y) {
 		double total = 0;
 		double per = 0.5;
 		double octaceve = 1;
-		double freq = 1;
-		double amp = 1;
+		double frequency = 1;
+		double amplitude = 1;
 		for (int i = 0; i < octaceve; i++) {
-			total += interpolateNoise(x * freq, y * freq) * amp;
+			total += interpolateNoise(x * frequency, y * frequency) * amplitude;
 		}
 		return total;
 	}

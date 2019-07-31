@@ -5,94 +5,205 @@
  */
 package mapgenerator;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import sun.java2d.pipe.BufferedOpCodes;
 
 /**
  *
  * @author kasper
  */
-public class Main {
+public class Main extends Application {
 
 	private static ClassicNoise noise = new ClassicNoise();
+	private GraphicsContext g2d;
+	private double[][] test;
 
-	/**
-	 * @param args the command line arguments
-	 */
+
 	public static void main(String[] args) throws IOException {
-		/*
-		System.out.println(noise.perlinSecond(1, 1, 0));
-		 */
-		test2();
-
+		printOctavePerlinValues();
+		//launch(args);
 	}
 
-	public static void test() {
-		int[][] map = new int[100][100];
-		for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (noise.perlinNoise2d(7*nx, 7*ny));
-				if (value<0.35){
-					map[i][j] = 0;
-				} else if (value>0.6){
-					map[i][j] = 2;
+	@Override
+	public void start(Stage primaryStage) {
 
-				} else{
-					map[i][j] = 1;
-				}
+		Group root = new Group();
+		Canvas canvas = new Canvas(640, 500);
+		root.getChildren().add(canvas);
+		g2d = canvas.getGraphicsContext2D();
+		BorderPane placement = new BorderPane();
+		placement.setCenter(root);
+		
+		VBox buttons = new VBox();
+		Button picture1Button = new Button("picture 1 with value noise");
+		picture1Button.setOnAction(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent e){
+				drawFromMap(generateValueNoise());
 			}
-		}
-		for (int i = 0; i<100;i++){
-			System.out.println(Arrays.toString(map[i]));
-		}
-
-	}
-
-	public static void test1() {
-		double[][] map = new double[100][100];
-		for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (noise.perlinNoise2d(7*nx, 7*ny))+1;
-				map[i][j] = Math.round(value*100.0)/100.0;
+		
+		});
+		
+		Button picture2Button = new Button("picture 2 no octaves");
+		picture2Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				drawFromMap(generateNoiseMapNoGradientNoOctaves());
 			}
-		}
-		for (int i = 0; i<100;i++){
-			System.out.println(Arrays.toString(map[i]));
-		}
+		});
+		buttons.getChildren().add(picture1Button);
+		buttons.getChildren().add(picture2Button);
+		placement.setRight(buttons);
+		
+		g2d.setFill(javafx.scene.paint.Color.BLACK);
+
+	
+		//drawFromMap(generateNoiseMapNoGradient());
+
+		Scene scene = new Scene(placement);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 
 	}
 
-	public static void test2() throws IOException {
-		int x = 256;
-		int y = 256;
-		BufferedImage image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2d = image.createGraphics();
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				//double value = (noise.octavePerlin(i*1.9, j,1,5,1));
-
-				double nx = i / (double)x-0.5;
-				double ny = j / (double)y-0.5;
-				double value = noise.interpolateNoise(2*nx,2*ny);
-				//double value = noise.perlinSecond(i * 1.5, j * 1.2, 1);
-				int rgb = 0x010101 * (int) ((value + 1) * 127.5);
-				Color col = new Color((int)(255*value),(int)(255*value),(int)(255*value));
-				g2d.setColor(col);
+	public void drawFromMap(double[][] map) {
+		for (int i = 0; i < map.length-1; i++) {
+			for (int j = 0; j < map[j].length-1; j++) {
+				float value = (float)map[i][j];
+				g2d.setFill(new Color(value,value,value,1) );
 				g2d.fillRect(i, j, 1, 1);
-				//image.setRGB(i, j, rgb);
+				
 			}
 		}
-		ImageIO.write(image, "png", new File("noise.png"));
+	}
+
+	public static void printPerlinSecondValues() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i*0.2 ;
+				double ny = j*0.2 ;
+				double value = (noise.perlinSecond(nx,ny,1));
+				map[i][j] = value;
+			}
+		}
+		for (int i = 0; i<100;i++){
+			System.out.println(Arrays.toString(map[i]));
+		}
+		double max = Arrays.stream(map[1]).max().getAsDouble();
+		System.out.println(max);
 
 	}
+
+
+	public static void printInterpolateNoiseValues() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i / 100.0 - 0.5;
+				double ny = j / 100.0 - 0.5;
+				double value = (noise.interpolateNoise(nx,ny));
+				map[i][j] = value;
+			}
+		}
+		for (int i = 0; i<100;i++){
+			System.out.println(Arrays.toString(map[i]));
+		}
+		double max = Arrays.stream(map[1]).max().getAsDouble();
+		System.out.println(max);
+
+	}
+
+	public static void printOctavePerlinValues() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i*0.2 ;
+				double ny = j*0.2;
+				double value = (noise.octavePerlin(nx,ny,1,1,1));
+				map[i][j] = value;
+			}
+		}
+		for (int i = 0; i<100;i++){
+			System.out.println(Arrays.toString(map[i]));
+		}
+		double max = Arrays.stream(map[1]).max().getAsDouble();
+		System.out.println(max);
+
+	}
+
+	public static double[][] generateValueNoise() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i / 100.0 - 0.5;
+				double ny = j / 100.0 - 0.5;
+				double value = (noise.valueNoise(3.5*nx, 3.5*ny));
+				map[i][j] = value;
+			}
+		}
+		return map;
+	}
+
+	public static double[][] generateNoiseMapNoGradientNoOctaves() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i / 100.0 - 0.5;
+				double ny = j / 100.0 - 0.5;
+				double value = (noise.interpolateNoise(nx, ny));
+				map[i][j] = value;
+			}
+		}
+		return map;
+	}
+
+	public static double[][] generateNoiseMapWithGradient() {
+		int height = 500;
+		int width = 500;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i / 100.0 - 0.5;
+				double ny = j / 100.0 - 0.5;
+				double value = (noise.perlinSecond(nx,ny,1));
+				map[i][j] = value;
+			}
+		}
+		return map;
+	}
+
+	
 
 }
