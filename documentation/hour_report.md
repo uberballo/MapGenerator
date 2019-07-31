@@ -7,4 +7,6 @@
 |25.7 | 4 | built a Perlin Noise algorithm|
 |28.7| 2| Studied Perlin Noise|
 |30.7|3| Implemented other Perlin Noise alghorithm|
-|Total|14|
+|31.7|2| Added UI that shows the generated noise|
+|1.8|2| Added tests and documentation|
+|Total|18|
