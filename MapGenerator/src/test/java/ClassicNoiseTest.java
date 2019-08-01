@@ -17,43 +17,12 @@ import org.junit.Test;
 public class ClassicNoiseTest {
 
 	private ClassicNoise classicNoise;
-	private ValueNoise valueNoise;
 
 	@Before
 	public void setup() {
 		classicNoise= new ClassicNoise();
-		valueNoise = new ValueNoise();
 	}
 
-	@Test
-	public void cosineInterpolateReturnsCorrectValue() {
-		double a = 0;
-		double b = 1;
-		double x = 0.5;
-		double result = valueNoise.cosineInterpolate(a, b, x);
-		Assert.assertTrue(result < b);
-		Assert.assertTrue(result > a);
-	}
-
-	@Test
-	public void interpolate2ReturnsCorrectValue() {
-		double a = 0;
-		double b = 1;
-		double x = 0.5;
-		double result = valueNoise.interpolate2(a, b, x);
-		Assert.assertTrue(result < b);
-		Assert.assertTrue(result > a);
-	}
-
-	@Test
-	public void interpolateReturnsCorrectValue() {
-		double a = 0;
-		double b = 1;
-		double x = 0.5;
-		double result = valueNoise.interpolate(a, b, x);
-		Assert.assertTrue(result < b);
-		Assert.assertTrue(result > a);
-	}
 
 	@Test
 	public void incMethodIncreasesCorrectlyWithoutRepeat() {
@@ -82,19 +51,6 @@ public class ClassicNoiseTest {
 		Assert.assertEquals(4, classicNoise.grad(hash, x, y, z), 0.0001);
 	}
 
-	@Test
-	public void octaveValueNoiseReturnsCorrectValues() {
-		int x = 100;
-		int y = 100;
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				double nx = i / 100.0 - 0.5 * 3;
-				double ny = j / 100.0 - 0.5 * 3;
-				double value = valueNoise.octaveValueNoise(nx, ny);
-				Assert.assertTrue(value>=0 && value<=1);
-			}
-		}
-	}
 
 	@Test
 	public void octavePerlinNoiseReturnsCorrectValues() {

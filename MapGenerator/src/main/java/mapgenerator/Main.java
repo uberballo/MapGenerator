@@ -43,8 +43,7 @@ public class Main extends Application {
 
 
 	public static void main(String[] args) throws IOException {
-		//printOctavePerlinValues();
-		//launch(args);
+		launch(args);
 	}
 
 
@@ -59,7 +58,7 @@ public class Main extends Application {
 		placement.setCenter(root);
 		
 		VBox buttons = new VBox();
-		Button picture1Button = new Button("picture 1 with value noise");
+		Button picture1Button = new Button("value noise with octaves");
 		picture1Button.setOnAction(new EventHandler<ActionEvent>(){
 
 			@Override
@@ -69,15 +68,33 @@ public class Main extends Application {
 		
 		});
 		
-		Button picture2Button = new Button("picture 2 no octaves");
+		Button picture2Button = new Button("value noise without octaves");
 		picture2Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				drawFromMap(generateNoiseMapNoGradientNoOctaves());
+				drawFromMap(generageValueNoiseWithoutOctaves());
+			}
+		});
+
+		Button picture3Button = new Button("Perlin noise without octaves");
+		picture3Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				drawFromMap(generatePerlinNoiseWithoutOctaves());
+			}
+		});
+
+		Button picture4Button = new Button("Perlin noise with octaves");
+		picture4Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				drawFromMap(generatePerlinNoiseWithOctaves());
 			}
 		});
 		buttons.getChildren().add(picture1Button);
 		buttons.getChildren().add(picture2Button);
+		buttons.getChildren().add(picture3Button);
+		buttons.getChildren().add(picture4Button);
 		placement.setRight(buttons);
 		
 		g2d.setFill(javafx.scene.paint.Color.BLACK);
@@ -95,6 +112,8 @@ public class Main extends Application {
 		for (int i = 0; i < map.length-1; i++) {
 			for (int j = 0; j < map[j].length-1; j++) {
 				float value = (float)map[i][j];
+				value = value > 1 ? 0 : value;
+				value = value < 0 ? 0 : value;
 				g2d.setFill(new Color(value,value,value,1) );
 				g2d.fillRect(i, j, 1, 1);
 				
@@ -102,106 +121,63 @@ public class Main extends Application {
 		}
 	}
 
-	public static void printPerlinSecondValues() {
-		int height = 500;
-		int width = 500;
-		double[][] map = new double[height][width];
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width ; j++) {
-				double nx = i*0.2 ;
-				double ny = j*0.2 ;
-				double value = (classicNoise.perlinSecond(nx,ny,1));
-				map[i][j] = value;
-			}
-		}
-		for (int i = 0; i<100;i++){
-			System.out.println(Arrays.toString(map[i]));
-		}
-		double max = Arrays.stream(map[1]).max().getAsDouble();
-		System.out.println(max);
-
-	}
-
-
-	public static void printInterpolateNoiseValues() {
-		int height = 500;
-		int width = 500;
-		double[][] map = new double[height][width];
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width ; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (valueNoise.interpolateNoise(nx,ny));
-				map[i][j] = value;
-			}
-		}
-		for (int i = 0; i<100;i++){
-			System.out.println(Arrays.toString(map[i]));
-		}
-		double max = Arrays.stream(map[1]).max().getAsDouble();
-		System.out.println(max);
-
-	}
-
-	public static void printOctavePerlinValues() {
-		int height = 500;
-		int width = 500;
-		double[][] map = new double[height][width];
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width ; j++) {
-				double nx = i*0.2 ;
-				double ny = j*0.2;
-				double value = (classicNoise.octavePerlin(nx,ny,1,1,1));
-				map[i][j] = value;
-			}
-		}
-		for (int i = 0; i<100;i++){
-			System.out.println(Arrays.toString(map[i]));
-		}
-		double max = Arrays.stream(map[1]).max().getAsDouble();
-		System.out.println(max);
-
-	}
-
 	public static double[][] generateValueNoise() {
 		int height = 500;
 		int width = 500;
+		double amp = 3.5;
 		double[][] map = new double[height][width];
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width ; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (valueNoise.octaveValueNoise(3.5*nx, 3.5*ny));
+				double nx = i / 100.0 - 0.5 ;
+				double ny = j / 100.0 - 0.5 ;
+				double value = (valueNoise.octaveValueNoise(nx * amp, ny * amp));
 				map[i][j] = value;
 			}
 		}
 		return map;
 	}
 
-	public static double[][] generateNoiseMapNoGradientNoOctaves() {
+	public static double[][] generageValueNoiseWithoutOctaves() {
 		int height = 500;
 		int width = 500;
+		int amp = 1;
 		double[][] map = new double[height][width];
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width ; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (valueNoise.interpolateNoise(nx, ny));
+				double nx = i / 100.0 - 0.5 * 2;
+				double ny = j / 100.0 - 0.5 * 2;
+				double value = (valueNoise.interpolateNoise(nx * amp, ny * amp));
 				map[i][j] = value;
 			}
 		}
 		return map;
 	}
 
-	public static double[][] generateNoiseMapWithGradient() {
+	public static double[][] generatePerlinNoiseWithoutOctaves() {
+		int height = 500;
+		int width = 500;
+		int amp = 2;
+		double[][] map = new double[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width ; j++) {
+				double nx = i / 100.0 - 0.1;
+				double ny = j / 100.0 - 0.1;
+				double value = (classicNoise.perlinSecond(nx*amp,ny*amp,1));
+				map[i][j] = value;
+			}
+		}
+		return map;
+	}
+
+	public static double[][] generatePerlinNoiseWithOctaves() {
 		int height = 500;
 		int width = 500;
 		double[][] map = new double[height][width];
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width ; j++) {
-				double nx = i / 100.0 - 0.5;
-				double ny = j / 100.0 - 0.5;
-				double value = (classicNoise.perlinSecond(nx,ny,1));
+				double nx = i / 100.0 - 0.1;
+				double ny = j / 100.0 - 0.1;
+				double value = (classicNoise.octavePerlin(nx,ny,1,1,1));
 				map[i][j] = value;
 			}
 		}
