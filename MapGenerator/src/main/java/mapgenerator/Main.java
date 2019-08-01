@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mapgenerator;
 
 import mapgenerator.noise.ClassicNoise;
@@ -97,10 +92,6 @@ public class Main extends Application {
 		buttons.getChildren().add(picture4Button);
 		placement.setRight(buttons);
 		
-		g2d.setFill(javafx.scene.paint.Color.BLACK);
-
-	
-		//drawFromMap(generateNoiseMapNoGradient());
 
 		Scene scene = new Scene(placement);
 		primaryStage.setScene(scene);
@@ -183,7 +174,5 @@ public class Main extends Application {
 		}
 		return map;
 	}
-
-	
 
 }
