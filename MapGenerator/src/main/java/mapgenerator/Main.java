@@ -5,6 +5,7 @@
  */
 package mapgenerator;
 
+import mapgenerator.noise.ClassicNoise;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,6 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import mapgenerator.noise.ValueNoise;
 import sun.java2d.pipe.BufferedOpCodes;
 
 /**
@@ -34,15 +36,17 @@ import sun.java2d.pipe.BufferedOpCodes;
  */
 public class Main extends Application {
 
-	private static ClassicNoise noise = new ClassicNoise();
+	private static ClassicNoise classicNoise = new ClassicNoise();
+	private static ValueNoise valueNoise = new ValueNoise();
 	private GraphicsContext g2d;
 	private double[][] test;
 
 
 	public static void main(String[] args) throws IOException {
-		printOctavePerlinValues();
+		//printOctavePerlinValues();
 		//launch(args);
 	}
+
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -106,7 +110,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i*0.2 ;
 				double ny = j*0.2 ;
-				double value = (noise.perlinSecond(nx,ny,1));
+				double value = (classicNoise.perlinSecond(nx,ny,1));
 				map[i][j] = value;
 			}
 		}
@@ -127,7 +131,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
-				double value = (noise.interpolateNoise(nx,ny));
+				double value = (valueNoise.interpolateNoise(nx,ny));
 				map[i][j] = value;
 			}
 		}
@@ -147,7 +151,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i*0.2 ;
 				double ny = j*0.2;
-				double value = (noise.octavePerlin(nx,ny,1,1,1));
+				double value = (classicNoise.octavePerlin(nx,ny,1,1,1));
 				map[i][j] = value;
 			}
 		}
@@ -167,7 +171,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
-				double value = (noise.valueNoise(3.5*nx, 3.5*ny));
+				double value = (valueNoise.octaveValueNoise(3.5*nx, 3.5*ny));
 				map[i][j] = value;
 			}
 		}
@@ -182,7 +186,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
-				double value = (noise.interpolateNoise(nx, ny));
+				double value = (valueNoise.interpolateNoise(nx, ny));
 				map[i][j] = value;
 			}
 		}
@@ -197,7 +201,7 @@ public class Main extends Application {
 			for (int j = 0; j < width ; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
-				double value = (noise.perlinSecond(nx,ny,1));
+				double value = (classicNoise.perlinSecond(nx,ny,1));
 				map[i][j] = value;
 			}
 		}
