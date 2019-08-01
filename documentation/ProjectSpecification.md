@@ -7,7 +7,8 @@ Algorithms we use, are Perlin noise and OpenSimplex noise. If there is time, A\*
 
 ## Time and space complexity  
 The array where the maps are stored, have both time and space complexity of O(n), O(1) when accessing.  
-Classic Perlin noise time complexity is O(2^n), while the OpenSimplex noise complexity is O(n^2), for n dimensions. Space complexity for both is O(1).  
+Classic Perlin noise time complexity is O(2^n), while the OpenSimplex noise complexity is O(n^2), for n-dimensions. We're making maps from the top-down perspective, thus we're only using 2-dimensional maps.
+Space complexity for both is O(1).  
  
 # Input and output  
 ## Input 
@@ -17,7 +18,11 @@ Frequency, how frequent the height difference is.
 
 ## Output  
 A map  
-Possibly a png picture, that shows the noise itself.
+Possibly a png picture, that shows the noise itself.  
+Here's a few examples how the maps/pictures could look like:  
+<img src="https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/gameMap.png" width="500">  
+And as Perlin noise  
+<img src="https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/perlinNoise.png" width="500">
 
 # Sources  
 Hugo elias, [Classic Perlin noise](http://web.archive.org/web/20160530124230/http://freespace.virgin.net/hugo.elias/models/m_perlin.htm)  
