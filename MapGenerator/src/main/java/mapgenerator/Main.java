@@ -34,8 +34,8 @@ public class Main extends Application {
 	private int height = 500;
 	private int length = 500;
 	private int octave = 1;
-	private double frequency = 0.01;
-	private double amplitude = 0.01;
+	private double frequency = 1;
+	private double amplitude = 1;
 
 	public static void main(String[] args) throws IOException {
 		launch(args);
@@ -100,8 +100,8 @@ public class Main extends Application {
 
 		buttons.getChildren().add(picture1Button);
 		buttons.getChildren().add(picture2Button);
-		buttons.getChildren().add(picture3Button);
 		buttons.getChildren().add(picture4Button);
+		buttons.getChildren().add(picture3Button);
 		buttons.getChildren().add(picture5Button);
 
 		//Slider
@@ -142,6 +142,7 @@ public class Main extends Application {
 		Slider frequencySlider = new Slider();
 		frequencySlider.setMin(0.01);
 		frequencySlider.setMax(5);
+		frequencySlider.setValue(1);
 		frequencySlider.setShowTickLabels(true);
 		frequencySlider.setShowTickMarks(true);
 		frequencySlider.setMinorTickCount(0);
@@ -168,6 +169,7 @@ public class Main extends Application {
 		Slider amplitudeSlider = new Slider();
 		amplitudeSlider.setMin(0.01);
 		amplitudeSlider.setMax(5);
+		amplitudeSlider.setValue(1);
 		amplitudeSlider.setShowTickLabels(true);
 		amplitudeSlider.setShowTickMarks(true);
 		amplitudeSlider.setMinorTickCount(0);
@@ -234,7 +236,6 @@ public class Main extends Application {
 			}
 		}
 	}
-
 	public void generateValueNoise() {
 		int height = 500;
 		int width = 500;
@@ -243,7 +244,7 @@ public class Main extends Application {
 			for (int j = 0; j < width; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
-				double value = (valueNoise.octaveValueNoise(nx * amp, ny * amp, frequency, octave));
+				double value = (valueNoise.octaveValueNoise(nx,ny, octave, frequency, amplitude));
 				this.map[i][j] = value;
 			}
 		}
