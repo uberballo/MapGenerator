@@ -114,13 +114,11 @@ public class ValueNoise {
 	 * @param y
 	 * @return
 	 */
-	public double octaveValueNoise(double x, double y) {
+	public double octaveValueNoise(double x, double y,double frequency, int octaves) {
 		double total = 0;
 		double per = 0.5;
-		double octaceve = 1;
-		double frequency = 1;
 		double amplitude = 1;
-		for (int i = 0; i < octaceve; i++) {
+		for (int i = 0; i < octaves; i++) {
 			total += interpolateNoise(x * frequency, y * frequency) * amplitude;
 		}
 		return total;

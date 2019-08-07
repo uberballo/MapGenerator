@@ -209,11 +209,9 @@ public class ClassicNoise {
 	 * noise.
 	 * @return combined gradient noise
 	 */
-	public double octavePerlin(double x, double y, double z, int octaves, double persistence) {
+	public double octavePerlin(double x, double y, double z, int octaves, double frequency, double amplitude, double persistence) {
 		double total = 0;
-		double frequency = 1;
-		double amplitude = 2;
-		double maxValue = 0;
+		double maxValue = 1;
 
 		for (int i = 0; i < octaves; i++) {
 			total += perlinSecond(x * frequency, y * frequency, z * frequency) * amplitude;
