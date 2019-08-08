@@ -78,6 +78,20 @@ public class ValueNoise {
 	public double interpolate(double a, double b, double x) {
 		return a + x * (b - a);
 	}
+	
+	public double easeIn(double x){
+		return x*x;
+	}
+
+	public double easeOut(double x){
+		return 1-easeIn(1-x);
+	}
+
+	public double easeInOut(double x){
+		double easeInValue = easeIn(x);
+		double easeOutValue = easeOut(x);
+		return interpolate2(easeInValue, easeOutValue, x);
+	}
 
 	/**
 	 * Interpolates noise around the point (x,y)
@@ -98,10 +112,10 @@ public class ValueNoise {
 		double v3 = smoothNoise(xAsInt, yAsInt + 1);
 		double v4 = smoothNoise(xAsInt + 1, yAsInt + 1);
 
-		double i1 = cosineInterpolate(v1, v2, xFraction);
-		double i2 = cosineInterpolate(v3, v4, xFraction);
+		double i1 = interpolate2(v1, v2, xFraction);
+		double i2 = interpolate2(v3, v4, xFraction);
 
-		return (cosineInterpolate(i1, i2, yFraction) + 1) / 2;
+		return (interpolate2(i1, i2, yFraction) + 1) / 2;
 	}
 
 	/**

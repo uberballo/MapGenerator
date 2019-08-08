@@ -1,4 +1,3 @@
-package mapgenerator;
 
 import mapgenerator.noise.ClassicNoise;
 import java.io.IOException;
@@ -239,7 +238,6 @@ public class Main extends Application {
 	public void generateValueNoise() {
 		int height = 500;
 		int width = 500;
-		double amp = 3.5;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				double nx = i / 100.0 - 0.5;
@@ -254,12 +252,11 @@ public class Main extends Application {
 	public void generageValueNoiseWithoutOctaves() {
 		int height = 500;
 		int width = 500;
-		int amp = 1;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				double nx = i / 100.0 - 0.5 * 2;
 				double ny = j / 100.0 - 0.5 * 2;
-				double value = (valueNoise.interpolateNoise(nx * amp, ny * amp));
+				double value = (valueNoise.interpolateNoise(nx*frequency, ny*frequency))*amplitude;
 				this.map[i][j] = value;
 			}
 		}

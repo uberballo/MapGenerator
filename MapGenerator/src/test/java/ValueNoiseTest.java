@@ -64,7 +64,7 @@ public class ValueNoiseTest {
 			for (int j = 0; j < y; j++) {
 				double nx = i / 100.0 - 0.5 * 3;
 				double ny = j / 100.0 - 0.5 * 3;
-				double value = valueNoise.octaveValueNoise(nx, ny);
+				double value = valueNoise.octaveValueNoise(nx, ny,1,1,1);
 				Assert.assertTrue(value>=0 && value<=1);
 			}
 		}

@@ -60,7 +60,7 @@ public class ClassicNoiseTest {
 			for (int j = 0; j < y; j++) {
 				double nx = i *0.2;
 				double ny = j *0.2;
-				double value = classicNoise.octavePerlin(nx, ny,1,1,1);
+				double value = classicNoise.octavePerlin(nx, ny,1,1,1,1,1);
 				Assert.assertTrue(value>=0 && value<=1);
 			}
 		}
