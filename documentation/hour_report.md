@@ -9,4 +9,6 @@
 |30.7|3| Implemented other Perlin Noise alghorithm|
 |31.7|2| Added UI that shows the generated noise|
 |1.8|2| Added tests and documentation|
-|Total|18|
+|6.8|2| Added print game map function and UI.|
+|8.8|4| Added sliders and made research|
+|Total|24|
