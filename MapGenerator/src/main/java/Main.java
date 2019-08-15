@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import mapgenerator.noise.OpenSimplexNoise;
 import mapgenerator.noise.ValueNoise;
 
 /**
@@ -28,6 +29,7 @@ public class Main extends Application {
 
 	private static ClassicNoise classicNoise = new ClassicNoise();
 	private static ValueNoise valueNoise = new ValueNoise();
+	private static OpenSimplexNoise OpenNoise = new OpenSimplexNoise();
 	private GraphicsContext g2d;
 	private double[][] map;
 	private int height = 500;
@@ -89,8 +91,17 @@ public class Main extends Application {
 			}
 		});
 
-		Button picture5Button = new Button("Game map from current map");
+		Button picture5Button = new Button("OpenSimplex noise");
 		picture5Button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				generateOpenSimplexNoise();
+				drawNoiseFromMap();
+			}
+		});
+
+		Button picture6Button = new Button("Game map from current map");
+		picture6Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				drawFromMap();
@@ -102,6 +113,7 @@ public class Main extends Application {
 		buttons.getChildren().add(picture4Button);
 		buttons.getChildren().add(picture3Button);
 		buttons.getChildren().add(picture5Button);
+		buttons.getChildren().add(picture6Button);
 
 		//Slider
 		//Octave slider
@@ -265,12 +277,11 @@ public class Main extends Application {
 	public void generatePerlinNoiseWithoutOctaves() {
 		int height = 500;
 		int width = 500;
-		int amp = 2;
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				double nx = i / 100.0 - 0.1;
 				double ny = j / 100.0 - 0.1;
-				double value = (classicNoise.perlinSecond(nx * amp, ny * amp, 1));
+				double value = (classicNoise.perlinSecond(nx * frequency, ny * frequency, 1))*amplitude;
 				this.map[i][j] = value;
 			}
 		}
@@ -284,6 +295,19 @@ public class Main extends Application {
 				double nx = i / 100.0 - 0.1;
 				double ny = j / 100.0 - 0.1;
 				double value = (classicNoise.octavePerlin(nx, ny, 1, octave, frequency, amplitude, 1));
+				this.map[i][j] = value;
+			}
+		}
+	}
+
+	public void generateOpenSimplexNoise() {
+		int height = 500;
+		int width = 500;
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				double nx = i / 100.0 - 0.1;
+				double ny = j / 100.0 - 0.1;
+				double value = (OpenNoise.openNoise(nx * frequency, ny * frequency))*amplitude;
 				this.map[i][j] = value;
 			}
 		}
