@@ -11,4 +11,6 @@
 |1.8|2| Added tests and documentation|
 |6.8|2| Added print game map function and UI.|
 |8.8|4| Added sliders and made research|
-|Total|24|
+|9.8|1| Documentation and small fixes|
+|15.8|3| Added OpenSimplexNoise and studied it|
+|Total|28|
