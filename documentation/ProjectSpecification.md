@@ -8,8 +8,7 @@ Algorithms we use, are Perlin noise and OpenSimplex noise. If there is time, A\*
 ## Time and space complexity  
 The array where the maps are stored, have both time and space complexity of O(n), O(1) when accessing.  
 OpenSimplex noise time complexity is O(N^2) where the N is the dimension.
-Classic Perlin noise time complexity is O(2^N), where the N is the maps dimensions. We loop trough the map with O(X\*Y) and for each (X,Y) element we calculate the weighted sum of its corner elements.   
-Value noise algorithms time complexity is O(2^N), We loop trough the map with O(X\*Y) and for each (X,Y) element, we have O(2^N), where the N is the maps dimensions, as we have to calculate weighted sum for the corner elements.  
+Value noise and Classic Perlin noise time complexity is O(X \* Y), where the X and Y are the width and height of the map. We loop trough the map with O(X \* Y) and for each (X,Y) element we calculate the weighted sum of its corner elements.   
 Space complexity for all of them is O(1).  
  
 # Input and output  
