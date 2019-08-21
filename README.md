@@ -4,6 +4,7 @@ Generating maps using classic perlin noise and the OpenSimplex Noise
 ## Links to documentation  
 
 ### [Project specification](https://github.com/uberballo/MapGenerator/blob/master/documentation/ProjectSpecification.md)  
+### [Testing documentation](https://github.com/uberballo/MapGenerator/blob/master/documentation/Testing_document.md)  
 
 ### Weekly reports  
 
