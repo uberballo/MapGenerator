@@ -16,8 +16,17 @@ interpolateNoiseReturnsCorrectValues and octaveValueNoiseReturnsCorrectValues bo
 
 ### OpenSimplex noise  
 
-Add test.   
+As the OpenSimplex noise generates values between -1 and 1, the test differ a bit from our previous test. Otherwise same idea.   
 
 ## Manual testing  
 Here the user themself, have to judge the results. As all these noise generate different type of picture and react to the variables in different way.  
-Using the sliders user may see and judge the generated noise, if the noise is fitting for them.
+Using the sliders user may see and judge the generated noise, if the noise is fitting for them.  
+Here are some examples:   
+   
+Value noise with 2 octave, 1 frequency and 1 amplitude:  
+<img src="https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/value%20noise%20too%20high%20octaves.PNG" width="500">  
+
+Here's Classic Perlin noise with same values:  
+<img src="https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/classic%20noise%20with%20same%20values.PNG" width="500">  
+
+We can see that there's a huge difference in quality.  
