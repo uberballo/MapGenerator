@@ -1,6 +1,7 @@
 ## Unit testing
 
-add unit testing here  
+<img src="https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/coverage%20report.PNG" width="1000">  
+We have good coverage on our noise methods. We don't test any of the UI methods.
 
 ### Classic noise  
 We test that all the helper methods work properly and the basic functionality. Most important tests ones are the methodGradReturnsCorrectValue and octavePerlinNoiseReturnsCorrectValue.  
