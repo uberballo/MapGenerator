@@ -44,19 +44,35 @@ public class OpenSimplexNoise {
 		5, -2, 2, -5,
 		-5, -2, -2, -5,};
 
-	//"Riskier" than interpolate
+	/**
+	 * Extrapolates the dx and dy value using precalculated gradient vectors.
+	 * @param xsb
+	 * @param ysb
+	 * @param dx
+	 * @param dy
+	 * @return 
+	 */
 	private double extrapolate(int xsb, int ysb, double dx, double dy) {
 		int index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E;
 		return gradients2D[index] * dx + gradients2D[index + 1] * dy;
 	}
 	
-	//fast floow function
-	private static int fastFloor(double x) {
+	/**
+	 * Fast floor function. Returns largest integer that is less than or equal to x.
+	 * @param x
+	 * @return 
+	 */
+	public static int fastFloor(double x) {
 		int xi = (int) x;
 		return x < xi ? xi - 1 : xi;
 	}
 
-	//2D OpenSimplex Noise.
+	/**
+	 * Returns value for the 2d Perlin noise. 
+	 * @param x
+	 * @param y
+	 * @return 
+	 */
 	public double openNoise(double x, double y) {
 
 		//Place input coordinates onto grid.

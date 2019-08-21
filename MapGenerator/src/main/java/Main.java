@@ -33,7 +33,7 @@ public class Main extends Application {
 	private GraphicsContext g2d;
 	private double[][] map;
 	private int height = 500;
-	private int length = 500;
+	private int width= 500;
 	private int octave = 1;
 	private double frequency = 1;
 	private double amplitude = 1;
@@ -44,7 +44,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		this.map = new double[length][height];
+		this.map = new double[width][height];
 
 		Group root = new Group();
 		Canvas canvas = new Canvas(540, 540);
@@ -53,12 +53,18 @@ public class Main extends Application {
 		BorderPane placement = new BorderPane();
 		placement.setCenter(root);
 
+		Label timeLabel = new Label("Time: ");
+		
+
 		VBox buttons = new VBox();
 		Button picture1Button = new Button("value noise with octave");
 		picture1Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
+				long startTime = System.currentTimeMillis();
 				generateValueNoise();
+				long endTime = System.currentTimeMillis();
+				timeLabel.setText("Time: "+(endTime-startTime)+" ms");
 				drawNoiseFromMap();
 			}
 
@@ -68,7 +74,10 @@ public class Main extends Application {
 		picture2Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				long startTime = System.currentTimeMillis();
 				generageValueNoiseWithoutOctaves();
+				long endTime = System.currentTimeMillis();
+				timeLabel.setText("Time: "+(endTime-startTime)+ " ms");
 				drawNoiseFromMap();
 			}
 		});
@@ -77,7 +86,10 @@ public class Main extends Application {
 		picture3Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				long startTime = System.currentTimeMillis();
 				generatePerlinNoiseWithoutOctaves();
+				long endTime = System.currentTimeMillis();
+				timeLabel.setText("Time: "+(endTime-startTime)+ " ms");
 				drawNoiseFromMap();
 			}
 		});
@@ -86,7 +98,10 @@ public class Main extends Application {
 		picture4Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				long startTime = System.currentTimeMillis();
 				generatePerlinNoiseWithOctaves();
+				long endTime = System.currentTimeMillis();
+				timeLabel.setText("Time: "+(endTime-startTime)+ " ms");
 				drawNoiseFromMap();
 			}
 		});
@@ -95,7 +110,10 @@ public class Main extends Application {
 		picture5Button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				long startTime = System.currentTimeMillis();
 				generateOpenSimplexNoise();
+				long endTime = System.currentTimeMillis();
+				timeLabel.setText("Time: "+(endTime-startTime)+ " ms");
 				drawNoiseFromMap();
 			}
 		});
@@ -204,6 +222,7 @@ public class Main extends Application {
 		sliders.getChildren().add(octaveSliderLayout);
 		sliders.getChildren().add(frequencySliderLayout);
 		sliders.getChildren().add(amplitudeSliderLayout);
+		sliders.getChildren().add(timeLabel);
 
 		placement.setRight(buttons);
 		placement.setBottom(sliders);
@@ -235,11 +254,11 @@ public class Main extends Application {
 				value = value < 0 ? 0 : value;
 				Color color = Color.BLACK;
 				if (value < 0.3) {
-					color = Color.BLUE;
+					color = Color.web("#4169E1",0.7+value);
 				} else if (value < 0.5) {
-					color = Color.GREEN;
+					color = Color.web("#006400",0.5+value);
 				} else {
-					color = Color.SADDLEBROWN;
+					color = Color.web("#8B4513",value);
 				}
 				g2d.setFill(color);
 				g2d.fillRect(i, j, 1, 1);
@@ -248,10 +267,8 @@ public class Main extends Application {
 		}
 	}
 	public void generateValueNoise() {
-		int height = 500;
-		int width = 500;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				double nx = i / 100.0 - 0.5;
 				double ny = j / 100.0 - 0.5;
 				double value = (valueNoise.octaveValueNoise(nx,ny, octave, frequency, amplitude));
@@ -262,10 +279,8 @@ public class Main extends Application {
 	}
 
 	public void generageValueNoiseWithoutOctaves() {
-		int height = 500;
-		int width = 500;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				double nx = i / 100.0 - 0.5 * 2;
 				double ny = j / 100.0 - 0.5 * 2;
 				double value = (valueNoise.interpolateNoise(nx*frequency, ny*frequency))*amplitude;
@@ -275,10 +290,8 @@ public class Main extends Application {
 	}
 
 	public void generatePerlinNoiseWithoutOctaves() {
-		int height = 500;
-		int width = 500;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				double nx = i / 100.0 - 0.1;
 				double ny = j / 100.0 - 0.1;
 				double value = (classicNoise.perlinSecond(nx * frequency, ny * frequency, 1))*amplitude;
@@ -288,10 +301,8 @@ public class Main extends Application {
 	}
 
 	public void generatePerlinNoiseWithOctaves() {
-		int height = 500;
-		int width = 500;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				double nx = i / 100.0 - 0.1;
 				double ny = j / 100.0 - 0.1;
 				double value = (classicNoise.octavePerlin(nx, ny, 1, octave, frequency, amplitude, 1));
@@ -301,10 +312,8 @@ public class Main extends Application {
 	}
 
 	public void generateOpenSimplexNoise() {
-		int height = 500;
-		int width = 500;
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				double nx = i / 100.0 - 0.1;
 				double ny = j / 100.0 - 0.1;
 				double value = (OpenNoise.openNoise(nx * frequency, ny * frequency))*amplitude;
