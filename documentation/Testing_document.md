@@ -16,7 +16,7 @@ interpolateNoiseReturnsCorrectValues and octaveValueNoiseReturnsCorrectValues bo
 
 ### OpenSimplex noise  
 
-Add test.   
+As the OpenSimplex noise generates values between -1 and 1, the test differ a bit from our previous test. Otherwise same idea.   
 
 ## Manual testing  
 Here the user themself, have to judge the results. As all these noise generate different type of picture and react to the variables in different way.  
