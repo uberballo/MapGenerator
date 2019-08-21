@@ -13,4 +13,5 @@
 |8.8|4| Added sliders and made research|
 |9.8|1| Documentation and small fixes|
 |15.8|3| Added OpenSimplexNoise and studied it|
-|Total|28|
+|22.8|4| Documentation, testing, UI fixes, code fices|
+|Total|32|
