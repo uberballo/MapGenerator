@@ -1,5 +1,9 @@
 # Implementation  
 
+### UML diagram
+UML diagram may be found from [here](https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/mapGeneratorUmlDiagram.png)  
+
+
 ### Noise algorithm  
 The main point of these noise algorithms is to generate pseudo-random values. The applications purpose is to generate noise with different algorithms and the user may compare them. When the ideal noise has been found, user may turn the noise into a map.
 We implement Value noise, Classic Perlin noise and OpenSimplex noise algorithms.  
