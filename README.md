@@ -15,3 +15,7 @@ Generating maps using classic perlin noise and the OpenSimplex Noise
 * [Weekly report 4](https://github.com/uberballo/MapGenerator/blob/master/documentation/Weekly_report_4.md)
 
 ### [Hour reporting](https://github.com/uberballo/MapGenerator/blob/master/documentation/hour_report.md)
+
+## How to use
+OpenJDK required to run the program.  
+You may download the .jar file and run it by `java -jar FILENAME.jar`
