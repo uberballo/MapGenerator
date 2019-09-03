@@ -1,7 +1,8 @@
 # Implementation  
 
 ### UML diagram
-UML diagram may be found from [here](https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/mapGeneratorUmlDiagram.png)  
+UML diagram may be found from [here](https://github.com/uberballo/MapGenerator/blob/master/documentation/pictures/mapGeneratorUmlDiagram.png)   
+There we can see that the diagram is quite simple, as the Main classes function is to run all the implemented noise algorithms.  
 
 
 ### Noise algorithm  
